@@ -1,4 +1,4 @@
-const contactsOperation = require("./contacts.js");
+const contactsOperation = require("./contacts");
 
 const { Command } = require("commander");
 const program = new Command();
@@ -21,17 +21,20 @@ async function invokeAction({ action, id, name, email, phone }) {
 			console.table(allContacts);
 			break;
 
-		// case "get":
-		// 	// ... id
-		// 	break;
+		case "get":
+			const contactById = await contactsOperation.getContactById(id);
+			console.log(contactById);
+			break;
 
-		// case "add":
-		// 	// ... name email phone
-		// 	break;
+		case "add":
+			const newContact = await contactsOperation.addContact(name, email, phone);
+			console.log(newContact);
+			break;
 
-		// case "remove":
-		// 	// ... id
-		// 	break;
+		case "remove":
+			const deletedContact = await contactsOperation.removeContact(id);
+			console.log(deletedContact);
+			break;
 
 		default:
 			console.warn("\x1B[31m Unknown action type!");
@@ -39,4 +42,3 @@ async function invokeAction({ action, id, name, email, phone }) {
 }
 
 invokeAction(argv);
-// invokeAction({ action: "list" });

@@ -3,26 +3,35 @@ const path = require("path");
 const { v4 } = require("uuid");
 const contactsPath = path.join(__dirname, "db/contacts.json");
 
-// TODO: задокументировать каждую функцию
 async function listContacts() {
 	const res = await fs.readFile(contactsPath);
 	const data = JSON.parse(res);
 	return data;
 }
 
-function getContactById(contactId) {
-	// ...твой код
+async function getContactById(contactId) {
+	const contacts = await listContacts();
+	const res = contacts.find(item => item.id === contactId);
+
+	return res || null;
 }
 
-function removeContact(contactId) {
-	// ...твой код
+async function removeContact(contactId) {
+	const contacts = await listContacts();
+	const index = contacts.findIndex(item => item.id === contactId);
+	if (index === -1) {
+		return null;
+	}
+	const [result] = contacts.splice(index, 1);
+	await fs.writeFile(contactsPath, JSON.stringify(data, null, 2));
+	return result;
 }
 
 async function addContact(name, email, phone) {
-	const data = await listContacts();
+	const contacts = await listContacts();
 	const newContact = { id: v4(), name, email, phone };
-	data.push(newContact);
-	fs.writeFile(contactsPath, JSON.stringify(data));
+	contacts.push(newContact);
+	await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
 	return newContact;
 }
 
