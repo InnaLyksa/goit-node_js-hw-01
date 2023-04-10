@@ -1,1 +1,1 @@
-# -goit-node_js-hw-01
+# goit-node_js-hw-01
